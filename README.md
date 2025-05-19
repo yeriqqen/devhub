@@ -1,84 +1,33 @@
-# Turborepo starter
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Dev%20Blog&fontSize=40)
 
-This Turborepo starter is maintained by the Turborepo core team.
+<div align="center">
 
-## Using this example
+  <p>A modern, fast, and SEO-friendly blog powered by Next.js and MDX.</p>
 
-Run the following command:
+  <h3>🔥 Main Tech Stack 🔥</h3>
+  <div>
+    <img src="https://img.shields.io/badge/Next.js-000000?style=flat&logo=nextdotjs&logoColor=white">
+    <img src="https://img.shields.io/badge/MDX-000000?style=flat&logo=markdown&logoColor=white">
+    <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white">
+  </div>
 
-```sh
-npx create-turbo@latest
-```
+  <h3>✨ Features ✨</h3>
+  <ul align="left">
+    <li>Write blog posts in Markdown with React components (MDX)</li>
+    <li>Static Site Generation (SSG) for fast load times</li>
+    <li>Responsive design with Tailwind CSS</li>
+    <li>Easy deployment on Vercel</li>
+  </ul>
 
-## What's inside?
+  <h3>🚀 Getting Started</h3>
+  <pre><code>git clone https://github.com/yeriqqen/dev-blog.git
+cd dev-blog
+npm install
+npm run dev
+</code></pre>
 
-This Turborepo includes the following packages/apps:
+  <h3>🌐 Live Demo</h3>
+  <a href="https://your-blog-url.vercel.app" target="_blank">Check it out here!</a>
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+  <hr>
+</div>
