@@ -13,3 +13,4 @@
 # TypeScript (Next.js web specific)
 *.tsbuildinfo
 next-env.d.ts
+.vercel
