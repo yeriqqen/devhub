@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { HeroSection } from "@/widgets/HeroSection";
 import { CookieNotice } from "@/widgets/CookieNotice";
-import { MainBrand } from "@/widgets/MainBrand";
 import { Welcome } from "@/widgets/Welcome";
 
 export default function Home() {
@@ -41,7 +40,6 @@ export default function Home() {
                 }}
             >
                 <HeroSection />
-                <MainBrand />
                 <CookieNotice />
             </main>
         </>
