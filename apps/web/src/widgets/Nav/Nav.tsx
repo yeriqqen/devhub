@@ -20,7 +20,7 @@ export const Nav = () => {
                         </div>
                     </Link>
                     <div
-                        className={`absolute top-0 left-full ml-2 text-xl font-light whitespace-nowrap transition-all duration-300 ease-out z-10 ${hoveredSide === 'left'
+                        className={`absolute top-0 left-full ml-2 text-xl text-black font-light whitespace-nowrap transition-all duration-300 ease-out z-10 ${hoveredSide === 'left'
                             ? 'opacity-100 translate-x-0 visible'
                             : 'opacity-0 -translate-x-4 invisible'
                             }`}
@@ -48,7 +48,7 @@ export const Nav = () => {
                         </div>
                     </div>
                     <div
-                        className={`absolute top-0 right-full mr-2 text-xl font-light whitespace-nowrap transition-all duration-300 ease-out z-10 ${hoveredSide === 'right'
+                        className={`absolute top-0 right-full mr-2 text-xl text-black font-light whitespace-nowrap transition-all duration-300 ease-out z-10 ${hoveredSide === 'right'
                             ? 'opacity-100 translate-x-0 visible'
                             : 'opacity-0 translate-x-4 invisible'
                             }`}
