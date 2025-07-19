@@ -1,13 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export const Nav = () => {
     const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
+    const pathname = usePathname();
+    const isHomePage = pathname === '/';
 
     return (
-        <nav className="fixed left-0 right-0 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
+        <nav className={`fixed left-0 right-0 pointer-events-none z-50 transition-all duration-500 ease-out ${isHomePage
+            ? 'top-1/2 transform -translate-y-1/2'
+            : 'top-8'
+            }`}>
             <div className="flex justify-between items-center px-6 md:px-8">
                 <div
                     className="relative pointer-events-auto"
