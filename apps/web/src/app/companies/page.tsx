@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CompaniesGrid } from '../../widgets/ExperienceGrid';
+import { ExperienceGrid } from '../../widgets/ExperienceGrid';
 
 export default function CompaniesPage() {
     return (
@@ -17,8 +17,8 @@ export default function CompaniesPage() {
                 </p>
             </div>
 
-            {/* Companies Grid */}
-            <CompaniesGrid />
+            {/* Experience Grid */}
+            <ExperienceGrid />
 
             {/* Call to Action */}
             <div className="mt-16 text-center">
