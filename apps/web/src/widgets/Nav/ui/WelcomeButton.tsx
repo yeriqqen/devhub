@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-export const WelcomeButton = () => {
+interface WelcomeButtonProps {
+    textColor?: string;
+}
+
+export const WelcomeButton = ({ textColor = 'text-black' }: WelcomeButtonProps) => {
     const [mounted, setMounted] = useState(false);
     const pathname = usePathname();
     const isHomePage = pathname === '/';
@@ -25,8 +29,8 @@ export const WelcomeButton = () => {
                 }}
             >
                 <div className="pointer-events-auto flex items-center">
-                    <Link href="/" className="cursor-pointer text-black transition-colors pointer-events-none">
-                        <h1 className="font-black tracking-tight text-black leading-none transition-all duration-1000 text-6xl md:text-8xl lg:text-9xl">
+                    <Link href="/" className={`cursor-pointer ${textColor} transition-colors pointer-events-none`}>
+                        <h1 className={`font-black tracking-tight ${textColor} leading-none transition-all duration-1000 text-6xl md:text-8xl lg:text-9xl`}>
                             WELCOME
                         </h1>
                     </Link>
@@ -46,9 +50,9 @@ export const WelcomeButton = () => {
             }}
         >
             <div className="pointer-events-auto flex items-center">
-                <Link href="/" className={`cursor-pointer text-black transition-colors ${isHomePage ? 'pointer-events-none' : 'hover:text-gray-600'
+                <Link href="/" className={`cursor-pointer ${textColor} transition-colors ${isHomePage ? 'pointer-events-none' : 'hover:text-gray-600'
                     }`}>
-                    <h1 className={`font-black tracking-tight text-black leading-none transition-all duration-1000 ${isHomePage
+                    <h1 className={`font-black tracking-tight ${textColor} leading-none transition-all duration-1000 ${isHomePage
                         ? 'text-6xl md:text-8xl lg:text-9xl'
                         : 'text-2xl md:text-3xl'
                         }`}>
