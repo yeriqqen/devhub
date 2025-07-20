@@ -73,7 +73,7 @@ export const Nav = () => {
                             <Link href="/contact" className="hover:text-blue-600 transition-colors mr-2">
                                 contact
                             </Link>
-                            <Link href="/explore" className="hover:text-blue-600 transition-colors mr-2">
+                            <Link href="/portfolio" className="hover:text-blue-600 transition-colors mr-2">
                                 portfolio
                             </Link>
                             <a href="/resume.pdf" target="_blank" className="hover:text-blue-600 transition-colors">
