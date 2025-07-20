@@ -1,1 +1,0 @@
-export { CompaniesGrid } from "./CompaniesGrid";

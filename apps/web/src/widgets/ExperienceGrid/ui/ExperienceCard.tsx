@@ -1,11 +1,11 @@
-import { Company } from '../model';
+import { Experience } from '../model';
 
-interface CompanyCardProps {
-    company: Company;
+interface ExperienceCardProps {
+    experience: Experience;
     className?: string;
 }
 
-export const CompanyCard = ({ company, className = "" }: CompanyCardProps) => {
+export const ExperienceCard = ({ experience, className = "" }: ExperienceCardProps) => {
     return (
         <li
             className={`group bg-transparent rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:border-gray-300 ${className}`}
@@ -16,7 +16,7 @@ export const CompanyCard = ({ company, className = "" }: CompanyCardProps) => {
                 <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
                         <span className="text-2xl font-bold text-white">
-                            {company.name.split(' ').map(word => word[0]).join('').slice(0, 2)}
+                            {experience.name.split(' ').map(word => word[0]).join('').slice(0, 2)}
                         </span>
                     </div>
                 </div>
@@ -25,10 +25,10 @@ export const CompanyCard = ({ company, className = "" }: CompanyCardProps) => {
             <div className="p-6">
                 <div className="text-center">
                     <h2 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
-                        {company.name}
+                        {experience.name}
                     </h2>
                     <p className="text-blue-600 font-medium text-sm">
-                        {company.role}
+                        {experience.role}
                     </p>
                 </div>
             </div>

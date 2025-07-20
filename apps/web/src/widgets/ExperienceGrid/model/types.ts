@@ -1,4 +1,4 @@
-export interface Company {
+export interface Experience {
     id: string;
     name: string;
     role: string;
@@ -11,7 +11,7 @@ export interface Company {
     link?: string;
 }
 
-export interface CompaniesGridProps {
-    companies?: Company[];
+export interface ExperienceGridProps {
+    experiences?: Experience[];
     className?: string;
 }
