@@ -28,19 +28,19 @@ export const RightMenu = () => {
                     : 'opacity-0 translate-x-4 invisible'
                     }`}
             >
-                <Link href="/about" className="hover:text-blue-600 transition-colors mr-2">
+                <Link href="/about" className="hover:text-neutral-500 transition-colors mr-2">
                     about
                 </Link>
-                <Link href="/services" className="hover:text-blue-600 transition-colors mr-2">
+                <Link href="/services" className="hover:text-neutral-500 transition-colors mr-2">
                     services
                 </Link>
-                <Link href="/contact" className="hover:text-blue-600 transition-colors mr-2">
+                <Link href="/contact" className="hover:text-neutral-500 transition-colors mr-2">
                     contact
                 </Link>
-                <Link href="/portfolio" className="hover:text-blue-600 transition-colors mr-2">
+                <Link href="/portfolio" className="hover:text-neutral-500 transition-colors mr-2">
                     portfolio
                 </Link>
-                <a href="/resume.pdf" target="_blank" className="hover:text-blue-600 transition-colors">
+                <a href="/resume.pdf" target="_blank" className="hover:text-neutral-500 transition-colors">
                     resume
                 </a>
             </ul>

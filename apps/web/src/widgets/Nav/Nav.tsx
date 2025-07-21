@@ -23,7 +23,7 @@ export const Nav = () => {
                 ? 'top-1/2 transform -translate-y-full'
                 : 'top-8'
                 }`}>
-                <div className="flex justify-between px-6 md:px-8">
+                <div className="flex justify-between px-6 md:px-8 italic">
                     <LeftMenu />
                     <RightMenu />
                 </div>
