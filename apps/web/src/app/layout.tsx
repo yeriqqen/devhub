@@ -26,7 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-gray-900 bg-gray-50 dark:text-gray-50 dark:bg-neutral-800 scrollbar-thin`}
+        style={{ fontOpticalSizing: 'auto' }}
       >
         <Nav />
         {children}

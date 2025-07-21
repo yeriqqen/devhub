@@ -2,39 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #f9fafb;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  /* Custom scrollbar utility classes */
+  .scrollbar-thin::-webkit-scrollbar {
+    @apply w-1.5;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  font-optical-sizing: auto;
-}
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded;
+  }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
-}
+  .scrollbar-none::-webkit-scrollbar {
+    @apply hidden;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  .scrollbar-auto::-webkit-scrollbar {
+    @apply w-auto;
+  }
+
+  .scrollbar-auto::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  .scrollbar-auto::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded;
+  }
+
+  .scrollbar-auto::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+  }
 }

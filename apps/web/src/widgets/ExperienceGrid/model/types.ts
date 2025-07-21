@@ -5,9 +5,9 @@ export interface Experience {
     duration: string;
     description: string;
     image: string;
-    gradient: string;
-    technologies: string[];
-    achievements: string[];
+    video?: string;
+    technologies?: string[];
+    achievements?: string[];
     link?: string;
 }
 
