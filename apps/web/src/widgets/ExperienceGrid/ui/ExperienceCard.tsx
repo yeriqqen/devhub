@@ -1,10 +1,5 @@
-import { Experience } from '../model';
+import { ExperienceCardProps } from '../model';
 import Image from 'next/image';
-
-interface ExperienceCardProps {
-    experience: Experience;
-    className?: string;
-}
 
 export const ExperienceCard = ({ experience, className = "" }: ExperienceCardProps) => {
     return (
