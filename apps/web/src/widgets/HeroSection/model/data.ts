@@ -13,8 +13,7 @@ export const defaultProjects: Project[] = [
   {
     id: "yeriqqen",
     name: "Yeriqqen",
-    description:
-      "Software Engineer",
+    description: "Software Engineer",
     image: "/placeholder-office-2.jpg",
     video: "/placeholder-office-2.mp4",
     link: "https://yeriqqen.vercel.app",
@@ -22,17 +21,14 @@ export const defaultProjects: Project[] = [
   {
     id: "bankai",
     name: "My Bankai",
-    description:
-      "",
-    image: "/placeholder-office-3.jpg",
-    video: "/placeholder-office-3.mp4",
-    link: "https://", 
+    description: "",
+    image: "/experiences/mybankai/chloro.jpg",
+    link: "https://",
   },
   {
     id: "yikipedia",
     name: "Yikipedia",
-    description:
-      "My Blog",
+    description: "My Blog",
     image: "/placeholder-office-4.jpg",
     video: "/placeholder-office-4.mp4",
     link: "https://yeriqqen.github.io",
@@ -49,8 +45,7 @@ export const defaultProjects: Project[] = [
   {
     id: "levelup",
     name: "나 혼자만 레벨업",
-    description:
-      "",
+    description: "",
     image: "/placeholder-office-6.jpg",
     video: "/placeholder-office-6.mp4",
     link: "https://",

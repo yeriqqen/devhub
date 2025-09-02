@@ -1,5 +1,6 @@
 import { defaultProjects } from './model';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export const HeroSection = () => {
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
@@ -37,17 +38,26 @@ export const HeroSection = () => {
 
     return (
         <section className="px-6 md:px-8 py-12 md:py-16 relative">
-            {/* Fullscreen Video Overlay */}
-            {displayedProject && displayedProjectData?.video && (
+            {/* Fullscreen Video/Image Overlay */}
+            {displayedProject && displayedProjectData && (
                 <div className={`fixed inset-0 z-40 pointer-events-none ${fadingOut ? 'animate-fade-out' : 'animate-fade-in'}`}>
-                    <video
-                        className="w-full h-full object-cover"
-                        src={displayedProjectData.video}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                    />
+                    {displayedProjectData.video ? (
+                        <video
+                            className="w-full h-full object-cover"
+                            src={displayedProjectData.video}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                        />
+                    ) : (
+                        <Image
+                            src={displayedProjectData.image}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            alt={displayedProjectData.name}
+                        />
+                    )}
                 </div>
             )}
 
@@ -65,7 +75,7 @@ export const HeroSection = () => {
                                     ? "opacity-30 text-neutral-500"
                                     : "opacity-100"
                                     }`}
-                                onMouseEnter={() => project.video && handleProjectEnter(project.id)}
+                                onMouseEnter={() => (project.video || project.image) && handleProjectEnter(project.id)}
                                 onMouseLeave={() => handleProjectLeave()}
                             >
                                 {project.name}
