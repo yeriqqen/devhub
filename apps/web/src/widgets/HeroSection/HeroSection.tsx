@@ -1,28 +1,49 @@
 import { defaultProjects } from './model';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export const HeroSection = () => {
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
     const [fadingOut, setFadingOut] = useState(false);
     const [displayedProject, setDisplayedProject] = useState<string | null>(null);
+    const [leaveTimeout, setLeaveTimeout] = useState<NodeJS.Timeout | null>(null);
 
     // Handle project hover changes
     const handleProjectEnter = (projectId: string) => {
+        // Clear any pending leave timeout
+        if (leaveTimeout) {
+            clearTimeout(leaveTimeout);
+            setLeaveTimeout(null);
+        }
+        
         setFadingOut(false);
         setHoveredProject(projectId);
         setDisplayedProject(projectId);
     };
 
     const handleProjectLeave = () => {
-        setHoveredProject(null);
-        setFadingOut(true);
-        // Remove video after fade out animation completes
-        setTimeout(() => {
-            setDisplayedProject(null);
-            setFadingOut(false);
-        }, 400); // Match the animation duration
+        // Use timeout to prevent flickering when moving between items
+        const timeout = setTimeout(() => {
+            setHoveredProject(null);
+            setFadingOut(true);
+            // Remove video after fade out animation completes
+            setTimeout(() => {
+                setDisplayedProject(null);
+                setFadingOut(false);
+            }, 400);
+        }, 150); // Small delay to prevent flickering
+        
+        setLeaveTimeout(timeout);
     };
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (leaveTimeout) {
+                clearTimeout(leaveTimeout);
+            }
+        };
+    }, [leaveTimeout]);
 
     // Create rows with exactly 4 items each
     const createRows = (projects: typeof defaultProjects) => {
@@ -62,7 +83,9 @@ export const HeroSection = () => {
             )}
 
             {/* Project Titles */}
-            <ul className="text-center items-center flex flex-col gap-y-1 relative z-50">
+            <ul className="text-center items-center flex flex-col gap-y-1 relative z-50"
+                onMouseLeave={handleProjectLeave}
+            >
                 {projectRows.map((row, rowIndex) => (
                     <div
                         key={rowIndex}
@@ -75,8 +98,12 @@ export const HeroSection = () => {
                                     ? "opacity-30 text-neutral-500"
                                     : "opacity-100"
                                     }`}
-                                onMouseEnter={() => (project.video || project.image) && handleProjectEnter(project.id)}
-                                onMouseLeave={() => handleProjectLeave()}
+                                onMouseEnter={() => {
+                                    if ((project.video || project.image) && project.name !== "Soon") {
+                                        handleProjectEnter(project.id);
+                                    }
+                                }}
+                                // Remove individual onMouseLeave - handled by container
                             >
                                 {project.name}
                             </li>
