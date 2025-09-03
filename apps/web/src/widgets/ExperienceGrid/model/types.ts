@@ -4,7 +4,8 @@ export interface Experience {
   role: string;
   duration: string;
   description: string;
-  image: string;
+  image1: string;
+  image2?: string;
   video?: string;
   technologies?: string[];
   achievements?: string[];
