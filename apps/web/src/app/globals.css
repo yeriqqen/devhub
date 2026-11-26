@@ -43,12 +43,12 @@
 
 .project-preview {
   clip-path: circle(0% at var(--preview-x) var(--preview-y));
-  transition: clip-path 260ms ease-in;
+  transition: clip-path var(--preview-close-duration) ease-in;
 }
 
 .project-preview-open {
   clip-path: circle(142% at var(--preview-x) var(--preview-y));
-  transition: clip-path 460ms cubic-bezier(0.25, 0.75, 0.25, 1);
+  transition: clip-path 900ms cubic-bezier(0.32, 0.06, 0.3, 1);
 }
 
 .project-preview-labels {
@@ -71,6 +71,43 @@
   }
 }
 
+.home-hover-cursor {
+  display: none;
+}
+
+@media (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .home-hover-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    display: block;
+    pointer-events: none;
+    mix-blend-mode: difference;
+  }
+
+  .home-hover-cursor::before {
+    position: absolute;
+    top: -16px;
+    left: -16px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid white;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.45);
+    transition:
+      opacity 180ms ease,
+      transform 220ms ease-out;
+    content: "";
+  }
+
+  .home-hover-cursor[data-active]::before {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
 html:has(dialog[open]) {
   overflow: hidden;
 }
@@ -78,6 +115,15 @@ html:has(dialog[open]) {
 .home-navigation {
   background: #f9fafb;
   color: #0a0a0a;
+}
+
+body:has(.project-preview-labels) .home-navigation {
+  background: transparent;
+}
+
+body:has(.project-preview-labels) .home-navigation .home-nav-control {
+  color: white;
+  text-shadow: 0 1px 5px #000;
 }
 
 @media (min-width: 1024px) and (min-height: 680px) {
@@ -92,12 +138,5 @@ html:has(dialog[open]) {
   .home-navigation button,
   .home-navigation [id] {
     pointer-events: auto;
-  }
-
-  body:has(.project-preview) .home-navigation nav > a,
-  body:has(.project-preview) .home-navigation button {
-    border-radius: 0.25rem;
-    background: #f9fafb;
-    box-shadow: 0 0 0 0.3rem #f9fafb;
   }
 }

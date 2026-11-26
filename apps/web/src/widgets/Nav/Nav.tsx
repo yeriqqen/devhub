@@ -20,7 +20,8 @@ export function Nav() {
         <Link
           href="/explore"
           aria-current={pathname === "/explore" ? "page" : undefined}
-          className="justify-self-start text-lg font-light italic underline underline-offset-4 sm:text-xl"
+          className="home-nav-control justify-self-start text-lg font-light italic underline underline-offset-4 sm:text-xl"
+          data-hover-cursor
         >
           explore
         </Link>

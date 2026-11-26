@@ -9,7 +9,7 @@ export default function ExplorePage() {
   return (
     <main className="mx-auto max-w-4xl px-6 pb-20 pt-28 sm:px-8 sm:pt-36">
       <h1 className="mb-10 text-5xl font-light italic tracking-tight sm:text-7xl">
-        Projects
+        Explore
       </h1>
       <ul className="border-t border-neutral-200">
         {projects.map(({ id, name, description, link, image }) => (
@@ -40,7 +40,7 @@ export default function ExplorePage() {
                 </summary>
                 <p className="mt-2 text-sm text-neutral-600">
                   <a href={image} className="underline underline-offset-4">
-                    View project image
+                    View image
                   </a>
                 </p>
               </details>

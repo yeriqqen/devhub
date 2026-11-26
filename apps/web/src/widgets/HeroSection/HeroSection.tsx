@@ -12,11 +12,13 @@ import {
 } from "react";
 import { defaultProjects, type Project } from "./model";
 
+const previewCloseDuration = 520;
+
 interface Preview {
   project: Project;
   x: number;
   y: number;
-  playVideo: boolean;
+  reducedMotion: boolean;
   pinned: boolean;
   closing: boolean;
 }
@@ -25,25 +27,60 @@ export function HeroSection() {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [loadedImage, setLoadedImage] = useState<string>();
   const projectList = useRef<HTMLUListElement>(null);
+  const cursorRing = useRef<HTMLSpanElement>(null);
   const touchLink = useRef(false);
 
   useEffect(() => {
     if (!preview?.closing) return;
-    const timer = window.setTimeout(() => setPreview(null), 260);
+    const timer = window.setTimeout(
+      () => setPreview(null),
+      previewCloseDuration,
+    );
     return () => window.clearTimeout(timer);
   }, [preview]);
+
+  useEffect(() => {
+    const cursor = cursorRing.current;
+    if (!cursor || !window.matchMedia("(any-pointer: fine)").matches) return;
+
+    const hideCursor = () => cursor.removeAttribute("data-active");
+
+    const moveCursor = (event: globalThis.PointerEvent) => {
+      if (
+        event.pointerType !== "mouse" ||
+        !(event.target instanceof Element) ||
+        !event.target.closest("[data-hover-cursor]")
+      ) {
+        hideCursor();
+        return;
+      }
+
+      cursor.style.translate = `${event.clientX}px ${event.clientY}px`;
+      cursor.setAttribute("data-active", "");
+    };
+
+    document.addEventListener("pointermove", moveCursor, { passive: true });
+    document.documentElement.addEventListener("pointerleave", hideCursor);
+    window.addEventListener("blur", hideCursor);
+    return () => {
+      document.removeEventListener("pointermove", moveCursor);
+      document.documentElement.removeEventListener("pointerleave", hideCursor);
+      window.removeEventListener("blur", hideCursor);
+    };
+  }, []);
 
   function showPreview(project: Project, button: HTMLElement, pinned = false) {
     const { left, top, width, height } = button.getBoundingClientRect();
     const x = ((left + width / 2) / window.innerWidth) * 100;
     const y = ((top + height / 2) / window.innerHeight) * 100;
-    const playVideo = !window.matchMedia("(prefers-reduced-motion: reduce)")
-      .matches;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     setPreview({
       project,
       x,
       y,
-      playVideo,
+      reducedMotion,
       pinned,
       closing: false,
     });
@@ -59,7 +96,7 @@ export function HeroSection() {
         ) {
           return current;
         }
-        return current.project.image === loadedImage
+        return current.project.image === loadedImage && !current.reducedMotion
           ? { ...current, closing: true }
           : null;
       });
@@ -98,6 +135,7 @@ export function HeroSection() {
       }}
       className="px-6 md:px-8"
     >
+      <span ref={cursorRing} aria-hidden="true" className="home-hover-cursor" />
       {preview && (
         <div
           key={preview.project.id}
@@ -107,6 +145,7 @@ export function HeroSection() {
             {
               "--preview-x": `${preview.x}%`,
               "--preview-y": `${preview.y}%`,
+              "--preview-close-duration": `${previewCloseDuration}ms`,
             } as CSSProperties
           }
         >
@@ -126,7 +165,7 @@ export function HeroSection() {
               )
             }
           />
-          {isRevealed && preview.project.video && preview.playVideo && (
+          {isRevealed && preview.project.video && !preview.reducedMotion && (
             <video
               aria-hidden="true"
               className="absolute inset-0 size-full object-cover opacity-0"
@@ -149,6 +188,7 @@ export function HeroSection() {
       >
         {defaultProjects.map((project) => {
           const interaction = {
+            "data-hover-cursor": true,
             onPointerEnter: (event: PointerEvent<HTMLElement>) =>
               previewOnHover(project, event),
             onPointerLeave: (event: PointerEvent<HTMLElement>) => {
@@ -164,7 +204,7 @@ export function HeroSection() {
                 showPreview(project, event.currentTarget);
             },
             className:
-              "inline-block touch-manipulation rounded-sm px-2 italic hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4",
+              "inline-block cursor-pointer touch-manipulation rounded-sm px-2 italic hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4",
           };
 
           const isProjectPinned =

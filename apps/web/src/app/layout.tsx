@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | Yestay Yessenbay",
   },
   description:
-    "Projects, work experience, and contact details for Yestay Yessenbay.",
+    "My corner of the internet for things I’ve made, notes I’ve written, and a way to say hello.",
 };
 
 export default function RootLayout({

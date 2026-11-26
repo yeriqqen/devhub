@@ -11,23 +11,21 @@ export default function AboutPage() {
       </h1>
       <div className="max-w-xl space-y-5 text-lg leading-relaxed text-neutral-700">
         <p>
-          I’m Yestay Yessenbay. I’m from Kazakhstan and study computer science
-          and mathematics at GIST in Gwangju, South Korea.
+          I’m Yestay Yessenbay. I’m from Kazakhstan and study at GIST in
+          Gwangju, South Korea.
         </p>
         <p>
-          I do research in GIST’s Autonomous Computing Systems Lab. Before that,
-          I worked on DEP’s web platform, from its Next.js frontend to the API
-          and database behind it.
+          This is where I keep things I’ve made and notes I want to come back
+          to.
         </p>
-        <p>Outside of work, I run, swim, lift, and study languages.</p>
       </div>
       <div className="mt-10 flex flex-wrap gap-6 border-t border-neutral-200 pt-6 text-sm">
-        <Link href="/portfolio" className="underline underline-offset-4">
-          Portfolio
+        <Link href="/explore" className="underline underline-offset-4">
+          Explore
         </Link>
-        <a href="/resume.pdf" className="underline underline-offset-4">
-          Résumé (PDF)
-        </a>
+        <Link href="/contact" className="underline underline-offset-4">
+          Say hello
+        </Link>
       </div>
     </main>
   );

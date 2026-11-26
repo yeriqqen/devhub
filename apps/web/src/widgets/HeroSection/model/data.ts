@@ -4,7 +4,7 @@ export const defaultProjects: Project[] = [
   {
     id: "dep",
     name: "DEP",
-    description: "Company web platform built with Next.js and NestJS.",
+    description: "A team I worked with in Gwangju.",
     image: "/experiences/dep/dep.jpeg",
     video: "/experiences/dep/VSS_RECAP_2023.mp4",
     link: "https://dep.team",
@@ -12,20 +12,20 @@ export const defaultProjects: Project[] = [
   {
     id: "yeriqqen",
     name: "Yeriqqen",
-    description: "Personal site.",
+    description: "My personal homepage.",
     image: "/project-previews/yeriqqen.webp",
     link: "https://yeriqqen.vercel.app",
   },
   {
     id: "bankai",
     name: "My Bankai",
-    image: "/experiences/mybankai/chloro.jpg",
+    image: "/project-previews/yikipedia.webp",
   },
   {
     id: "yikipedia",
     name: "Yikipedia",
-    description: "My blog.",
-    image: "/project-previews/yikipedia.webp",
+    description: "Notes on what I’m learning.",
+    image: "/experiences/mybankai/chloro.jpg",
     link: "https://yeriqqen.github.io",
   },
   {

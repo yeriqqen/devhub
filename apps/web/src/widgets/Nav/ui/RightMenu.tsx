@@ -5,9 +5,8 @@ import { useId, useRef, useState } from "react";
 
 const connectLinks = [
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
-  { href: "/portfolio", label: "Portfolio" },
+  { href: "/portfolio", label: "Work" },
 ];
 
 export function RightMenu({ dark }: { dark: boolean }) {
@@ -46,7 +45,8 @@ export function RightMenu({ dark }: { dark: boolean }) {
       <button
         ref={button}
         type="button"
-        className="text-lg font-light italic underline-offset-4 hover:underline aria-expanded:underline sm:text-xl"
+        className="home-nav-control cursor-pointer text-lg font-light italic underline-offset-4 hover:underline aria-expanded:underline sm:text-xl"
+        data-hover-cursor
         aria-expanded={isOpen}
         aria-controls={menuId}
         onClick={() => {
@@ -75,16 +75,6 @@ export function RightMenu({ dark }: { dark: boolean }) {
               </Link>
             </li>
           ))}
-          <li>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block px-4 py-2 hover:underline"
-            >
-              Résumé <span aria-hidden="true">↗</span>
-            </a>
-          </li>
         </ul>
       </div>
     </div>
