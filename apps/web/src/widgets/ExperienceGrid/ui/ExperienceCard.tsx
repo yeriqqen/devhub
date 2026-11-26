@@ -1,65 +1,45 @@
-import { ExperienceCardProps } from '../model';
-import Image from 'next/image';
+import Image from "next/image";
+import type { ExperienceCardProps } from "../model";
+import { ExperienceMedia } from "./ExperienceMedia";
 
-export const ExperienceCard = ({ experience, className = "" }: ExperienceCardProps) => {
-    return (
-        <li
-            className={`bg-transparent overflow-hidden ${className}`}
-        >
-            <div className={`relative w-full group hover:shadow-xl group-hover:border-gray-300 transition-all duration-300 aspect-[5/4] overflow-hidden bg-gradient-to-br`}>
-                <Image
-                    src={experience.image1}
-                    alt={experience.name}
-                    width={500}
-                    height={400}
-                    priority
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                    className="group-hover:hidden transition-all duration-700 w-full h-full object-cover"
-                />
-                {experience.video ? (
-                    <video
-                        src={experience.video}
-                        autoPlay
-                        loop
-                        muted
-                        className="hidden group-hover:block w-full h-full object-cover"
-                    >
-                        <Image
-                            src={experience.image2 || experience.image1}
-                            alt={experience.name}
-                            width={500}
-                            height={400}
-                            priority
-                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                            className="group-hover:hidden w-full h-full object-cover"
-                        />
-                    </video>
-                ) : (
-                    <Image
-                        src={experience.image2 || experience.image1}
-                        alt={experience.name}
-                        width={500}
-                        height={400}
-                        priority
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                        className="hidden group-hover:block w-full h-full object-cover transition-all duration-700"
-                    />
-                )}
-            </div>
+export function ExperienceCard({
+  experience,
+  className = "",
+}: ExperienceCardProps) {
+  const sizes = "(min-width: 1024px) 42vw, 90vw";
+  const alternateImage = experience.video ? undefined : experience.image2;
 
-            <div className="py-6">
-                <div className="text-center flex flex-row justify-center relative">
-                    <h2 className="absolute left-0 text-xl mb-1">
-                        {experience.name}
-                    </h2>
-                    <p className="font-medium text-xl">
-                        {experience.role}
-                    </p>
-                    <time className="absolute right-0 opacity-20 text-lg">
-                        ©{experience.duration}
-                    </time>
-                </div>
-            </div>
-        </li>
-    );
-};
+  return (
+    <li className={className}>
+      <ExperienceMedia
+        name={experience.name}
+        link={experience.link}
+        video={experience.video}
+      >
+        <Image
+          src={experience.image1}
+          alt={experience.link ? "" : experience.name}
+          fill
+          sizes={sizes}
+          className="object-cover"
+        />
+        {alternateImage && (
+          <Image
+            src={alternateImage}
+            alt=""
+            fill
+            sizes={sizes}
+            className="hidden object-cover group-hover:block group-focus-visible:block"
+          />
+        )}
+      </ExperienceMedia>
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-4">
+        <h2 className="text-xl">{experience.name}</h2>
+        <p className="text-neutral-300">{experience.role}</p>
+        <p className="ml-auto whitespace-nowrap text-sm text-neutral-400">
+          {experience.duration}
+        </p>
+      </div>
+    </li>
+  );
+}

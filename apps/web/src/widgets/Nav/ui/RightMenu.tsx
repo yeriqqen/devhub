@@ -1,49 +1,92 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { useId, useRef, useState } from "react";
 
-export const RightMenu = () => {
-    const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
-    const pathname = usePathname();
-    const isPortfolioPage = pathname === '/portfolio';
+const connectLinks = [
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/contact", label: "Contact" },
+  { href: "/portfolio", label: "Portfolio" },
+];
 
-    const textColor = isPortfolioPage ? 'text-white' : 'text-black';
+export function RightMenu({ dark }: { dark: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const button = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+  const isOpen = hovered || expanded;
 
-    return (
-        <div
-            className="relative pointer-events-auto"
-            onMouseEnter={() => setHoveredSide('right')}
-            onMouseLeave={() => setHoveredSide(null)}
+  function close() {
+    setHovered(false);
+    setExpanded(false);
+  }
+
+  return (
+    <div
+      className="relative col-start-3 row-start-1 justify-self-end"
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") setHovered(true);
+      }}
+      onPointerLeave={() => {
+        if (!button.current?.parentElement?.contains(document.activeElement))
+          setHovered(false);
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) close();
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && isOpen) {
+          event.stopPropagation();
+          close();
+          button.current?.focus();
+        }
+      }}
+    >
+      <button
+        ref={button}
+        type="button"
+        className="text-lg font-light italic underline-offset-4 hover:underline aria-expanded:underline sm:text-xl"
+        aria-expanded={isOpen}
+        aria-controls={menuId}
+        onClick={() => {
+          if (expanded) close();
+          else setExpanded(true);
+        }}
+      >
+        connect
+      </button>
+      <div
+        id={menuId}
+        hidden={!isOpen}
+        className="absolute right-0 top-full pt-2"
+      >
+        <ul
+          className={`w-40 border py-1 text-sm shadow-sm ${dark ? "border-neutral-700 bg-neutral-900 text-white" : "border-neutral-200 bg-white text-neutral-950"}`}
         >
-            <div className={`cursor-pointer ${textColor}`}>
-                <div className="text-xl font-light relative z-20">
-                    connect
-                </div>
-            </div>
-            <ul
-                className={`absolute top-0 right-full mr-2 text-xl ${textColor} font-light whitespace-nowrap transition-all duration-300 ease-out z-10 ${hoveredSide === 'right'
-                    ? 'opacity-100 translate-x-0 visible'
-                    : 'opacity-0 translate-x-4 invisible'
-                    }`}
+          {connectLinks.map(({ href, label }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className="block px-4 py-2 hover:underline"
+                prefetch={false}
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block px-4 py-2 hover:underline"
             >
-                <Link href="/about" className="hover:text-neutral-500 transition-colors mr-2">
-                    about
-                </Link>
-                <Link href="/services" className="hover:text-neutral-500 transition-colors mr-2">
-                    services
-                </Link>
-                <Link href="/contact" className="hover:text-neutral-500 transition-colors mr-2">
-                    contact
-                </Link>
-                <Link href="/portfolio" className="hover:text-neutral-500 transition-colors mr-2">
-                    portfolio
-                </Link>
-                <a href="/resume.pdf" target="_blank" className="hover:text-neutral-500 transition-colors">
-                    resume
-                </a>
-            </ul>
-        </div>
-    )
+              Résumé <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
 }

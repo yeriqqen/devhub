@@ -1,36 +1,40 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import { WelcomeButton, LeftMenu, RightMenu } from './ui';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { RightMenu } from "./ui/RightMenu";
 
-export const Nav = () => {
-    const [isClient, setIsClient] = useState(false);
-    const pathname = usePathname();
-    const isHomePage = pathname === '/';
-    const isPortfolioPage = pathname === '/portfolio';
+export function Nav() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const isPortfolio = pathname === "/portfolio";
 
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    const showHomepageLayout = isClient ? isHomePage : true;
-    const textColor = isPortfolioPage ? 'text-white' : 'text-black';
-
-    return (
-        <nav>
-            <div className={`fixed left-0 right-0 pointer-events-none z-50 transition-all duration-1000 ease-out ${showHomepageLayout
-                ? 'top-1/2 transform -translate-y-full'
-                : 'top-8'
-                }`}>
-                <div className="flex justify-between px-6 md:px-8 italic">
-                    <LeftMenu />
-                    <RightMenu />
-                </div>
-            </div>
-            <WelcomeButton textColor={textColor} />
-        </nav>
-    );
-};
-
-export default Nav;
+  return (
+    <header
+      className={`fixed inset-x-0 top-0 z-50 ${isHome ? "home-navigation" : isPortfolio ? "bg-neutral-900 text-white" : "bg-white text-neutral-950"}`}
+    >
+      <nav
+        aria-label="Main"
+        className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-6 py-5 md:px-8"
+      >
+        <Link
+          href="/explore"
+          aria-current={pathname === "/explore" ? "page" : undefined}
+          className="justify-self-start text-lg font-light italic underline underline-offset-4 sm:text-xl"
+        >
+          explore
+        </Link>
+        {!isHome && (
+          <Link
+            href="/"
+            aria-label="Home"
+            className="col-start-2 text-xl font-black leading-none tracking-tight sm:text-2xl"
+          >
+            WELCOME
+          </Link>
+        )}
+        <RightMenu key={pathname} dark={isPortfolio} />
+      </nav>
+    </header>
+  );
+}

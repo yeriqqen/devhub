@@ -1,9 +1,17 @@
-import { ExperienceGrid } from '../../widgets/ExperienceGrid';
+import type { Metadata } from "next";
+import { ExperienceGrid } from "@/widgets/ExperienceGrid";
 
-export default function CompaniesPage() {
-    return (
-        <div className="w-[95%] mt-10 mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <ExperienceGrid />
-        </div>
-    );
+export const metadata: Metadata = { title: "Portfolio" };
+
+export default function PortfolioPage() {
+  return (
+    <main className="min-h-svh bg-neutral-900 px-6 pb-20 pt-28 text-white sm:px-8 sm:pt-36">
+      <div className="mx-auto max-w-6xl">
+        <h1 className="mb-8 text-5xl font-light italic tracking-tight sm:text-7xl">
+          Portfolio
+        </h1>
+        <ExperienceGrid />
+      </div>
+    </main>
+  );
 }

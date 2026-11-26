@@ -1,20 +1,36 @@
-'use client';
+"use client";
 
-export const CookieNotice = () => {
-    return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:p-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <p className="text-sm text-black flex-1">
-                    I use cookies and other tracking technologies on my website to enhance your experience. By continuing to visit this site, you agree to my use of cookies.
-                </p>
-                <div className="flex gap-4">
-                    <button className="text-sm underline text-black hover:text-gray-600 transition-colors">
-                        Accept
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
+import { useEffect, useState } from "react";
 
-export default CookieNotice;
+export function CookieNotice() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(localStorage.getItem("cookieNoticeAccepted") !== "true");
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <aside
+      aria-label="Cookie notice"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-neutral-200 bg-white px-4 py-3 text-neutral-950 md:px-8"
+    >
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm">
+          This site uses cookies and other tracking technologies.
+        </p>
+        <button
+          type="button"
+          className="shrink-0 px-2 py-2 text-sm underline underline-offset-4"
+          onClick={() => {
+            localStorage.setItem("cookieNoticeAccepted", "true");
+            setVisible(false);
+          }}
+        >
+          Accept
+        </button>
+      </div>
+    </aside>
+  );
+}

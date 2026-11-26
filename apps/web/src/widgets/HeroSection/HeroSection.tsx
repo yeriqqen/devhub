@@ -1,117 +1,220 @@
-import { defaultProjects } from './model';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+"use client";
 
-export const HeroSection = () => {
-    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
-    const [fadingOut, setFadingOut] = useState(false);
-    const [displayedProject, setDisplayedProject] = useState<string | null>(null);
-    const [leaveTimeout, setLeaveTimeout] = useState<NodeJS.Timeout | null>(null);
+import Image from "next/image";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FocusEvent,
+  type PointerEvent,
+} from "react";
+import { defaultProjects, type Project } from "./model";
 
-    // Handle project hover changes
-    const handleProjectEnter = (projectId: string) => {
-        // Clear any pending leave timeout
-        if (leaveTimeout) {
-            clearTimeout(leaveTimeout);
-            setLeaveTimeout(null);
+interface Preview {
+  project: Project;
+  x: number;
+  y: number;
+  playVideo: boolean;
+  pinned: boolean;
+  closing: boolean;
+}
+
+export function HeroSection() {
+  const [preview, setPreview] = useState<Preview | null>(null);
+  const [loadedImage, setLoadedImage] = useState<string>();
+  const projectList = useRef<HTMLUListElement>(null);
+  const touchLink = useRef(false);
+
+  useEffect(() => {
+    if (!preview?.closing) return;
+    const timer = window.setTimeout(() => setPreview(null), 260);
+    return () => window.clearTimeout(timer);
+  }, [preview]);
+
+  function showPreview(project: Project, button: HTMLElement, pinned = false) {
+    const { left, top, width, height } = button.getBoundingClientRect();
+    const x = ((left + width / 2) / window.innerWidth) * 100;
+    const y = ((top + height / 2) / window.innerHeight) * 100;
+    const playVideo = !window.matchMedia("(prefers-reduced-motion: reduce)")
+      .matches;
+    setPreview({
+      project,
+      x,
+      y,
+      playVideo,
+      pinned,
+      closing: false,
+    });
+  }
+
+  const closePreview = useCallback(
+    (projectId?: string) => {
+      setPreview((current) => {
+        if (
+          !current ||
+          current.closing ||
+          (projectId && current.project.id !== projectId)
+        ) {
+          return current;
         }
-        
-        setFadingOut(false);
-        setHoveredProject(projectId);
-        setDisplayedProject(projectId);
-    };
+        return current.project.image === loadedImage
+          ? { ...current, closing: true }
+          : null;
+      });
+    },
+    [loadedImage],
+  );
 
-    const handleProjectLeave = () => {
-        // Use timeout to prevent flickering when moving between items
-        const timeout = setTimeout(() => {
-            setHoveredProject(null);
-            setFadingOut(true);
-            // Remove video after fade out animation completes
-            setTimeout(() => {
-                setDisplayedProject(null);
-                setFadingOut(false);
-            }, 400);
-        }, 150); // Small delay to prevent flickering
-        
-        setLeaveTimeout(timeout);
-    };
+  const isPinned = preview?.pinned && !preview.closing;
 
-    // Cleanup timeout on unmount
-    useEffect(() => {
-        return () => {
-            if (leaveTimeout) {
-                clearTimeout(leaveTimeout);
+  useEffect(() => {
+    if (!isPinned) return;
+
+    function dismissOnOutsidePress(event: globalThis.PointerEvent) {
+      const control =
+        event.target instanceof Element && event.target.closest("a, button");
+      if (!control || !projectList.current?.contains(control)) closePreview();
+    }
+
+    document.addEventListener("pointerdown", dismissOnOutsidePress);
+    return () =>
+      document.removeEventListener("pointerdown", dismissOnOutsidePress);
+  }, [closePreview, isPinned]);
+
+  function previewOnHover(project: Project, event: PointerEvent<HTMLElement>) {
+    if (event.pointerType !== "touch")
+      showPreview(project, event.currentTarget);
+  }
+
+  const isRevealed = preview?.project.image === loadedImage;
+
+  return (
+    <section
+      aria-label="Projects"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") closePreview();
+      }}
+      className="px-6 md:px-8"
+    >
+      {preview && (
+        <div
+          key={preview.project.id}
+          aria-hidden="true"
+          className={`project-preview pointer-events-none fixed inset-0 z-30 ${isRevealed && !preview.closing ? "project-preview-open" : ""}`}
+          style={
+            {
+              "--preview-x": `${preview.x}%`,
+              "--preview-y": `${preview.y}%`,
+            } as CSSProperties
+          }
+        >
+          <Image
+            alt=""
+            fill
+            loading="eager"
+            sizes="100vw"
+            className="object-cover"
+            src={preview.project.image}
+            onLoad={() => setLoadedImage(preview.project.image)}
+            onError={() =>
+              setPreview((current) =>
+                current?.project.id === preview.project.id && !current.pinned
+                  ? null
+                  : current,
+              )
             }
-        };
-    }, [leaveTimeout]);
+          />
+          {isRevealed && preview.project.video && preview.playVideo && (
+            <video
+              aria-hidden="true"
+              className="absolute inset-0 size-full object-cover opacity-0"
+              src={preview.project.video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              onPlaying={(event) =>
+                event.currentTarget.classList.remove("opacity-0")
+              }
+            />
+          )}
+        </div>
+      )}
 
-    // Create rows with exactly 4 items each
-    const createRows = (projects: typeof defaultProjects) => {
-        const rows = [];
-        for (let i = 0; i < projects.length; i += 4) {
-            rows.push(projects.slice(i, i + 4));
-        }
-        return rows;
-    };
+      <ul
+        ref={projectList}
+        className={`relative z-40 mx-auto grid max-w-5xl grid-cols-1 justify-items-center gap-x-6 gap-y-2 text-center text-3xl font-light italic leading-tight sm:grid-cols-2 sm:text-4xl lg:grid-cols-3 ${preview && isRevealed ? "project-preview-labels" : "text-neutral-950"}`}
+      >
+        {defaultProjects.map((project) => {
+          const interaction = {
+            onPointerEnter: (event: PointerEvent<HTMLElement>) =>
+              previewOnHover(project, event),
+            onPointerLeave: (event: PointerEvent<HTMLElement>) => {
+              if (
+                event.pointerType !== "touch" &&
+                !event.currentTarget.matches(":focus-visible")
+              )
+                closePreview(project.id);
+            },
+            onBlur: () => closePreview(project.id),
+            onFocus: (event: FocusEvent<HTMLElement>) => {
+              if (event.currentTarget.matches(":focus-visible"))
+                showPreview(project, event.currentTarget);
+            },
+            className:
+              "inline-block touch-manipulation rounded-sm px-2 italic hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4",
+          };
 
-    const projectRows = createRows(defaultProjects);
-    const displayedProjectData = defaultProjects.find(p => p.id === displayedProject);
+          const isProjectPinned =
+            isPinned && preview?.project.id === project.id;
 
-    return (
-        <section className="px-6 md:px-8 py-12 md:py-16 relative">
-            {/* Fullscreen Video/Image Overlay */}
-            {displayedProject && displayedProjectData && (
-                <div className={`fixed inset-0 z-40 pointer-events-none ${fadingOut ? 'animate-fade-out' : 'animate-fade-in'}`}>
-                    {displayedProjectData.video ? (
-                        <video
-                            className="w-full h-full object-cover"
-                            src={displayedProjectData.video}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                        />
-                    ) : (
-                        <Image
-                            src={displayedProjectData.image}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            alt={displayedProjectData.name}
-                        />
-                    )}
-                </div>
-            )}
-
-            {/* Project Titles */}
-            <ul className="text-center items-center flex flex-col gap-y-1 relative z-50"
-                onMouseLeave={handleProjectLeave}
-            >
-                {projectRows.map((row, rowIndex) => (
-                    <div
-                        key={rowIndex}
-                        className="flex flex-col md:flex-row gap-y-1 gap-x-[100px] items-center text-4xl font-light italic text-black"
-                    >
-                        {row.map((project) => (
-                            <li
-                                key={project.id}
-                                className={`${project.name === "Soon" ? "text-gray-400" : ""} ${project.name !== "Soon" ? "hover:underline cursor-pointer" : ""} transition-opacity duration-300 hover:text-white ${hoveredProject && hoveredProject !== project.id
-                                    ? "opacity-30 text-neutral-500"
-                                    : "opacity-100"
-                                    }`}
-                                onMouseEnter={() => {
-                                    if ((project.video || project.image) && project.name !== "Soon") {
-                                        handleProjectEnter(project.id);
-                                    }
-                                }}
-                                // Remove individual onMouseLeave - handled by container
-                            >
-                                {project.name}
-                            </li>
-                        ))}
-                    </div>
-                ))}
-            </ul>
-        </section>
-    )
-};
-export default HeroSection;
+          return (
+            <li key={project.id}>
+              {project.link ? (
+                <a
+                  href={project.link}
+                  {...interaction}
+                  onPointerDown={(event) => {
+                    touchLink.current = event.pointerType === "touch";
+                  }}
+                  onPointerCancel={() => {
+                    touchLink.current = false;
+                  }}
+                  onClick={(event) => {
+                    const tapped = touchLink.current && event.detail > 0;
+                    touchLink.current = false;
+                    if (tapped && !isProjectPinned) {
+                      event.preventDefault();
+                      showPreview(project, event.currentTarget, true);
+                    }
+                  }}
+                >
+                  {project.name}
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  {...interaction}
+                  aria-pressed={
+                    preview?.project.id === project.id && !preview.closing
+                  }
+                  onClick={(event) => {
+                    if (isProjectPinned) {
+                      closePreview(project.id);
+                    } else {
+                      showPreview(project, event.currentTarget, true);
+                    }
+                  }}
+                >
+                  {project.name}
+                </button>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}

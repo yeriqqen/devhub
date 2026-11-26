@@ -1,16 +1,15 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://yeriqqen.github.io/";
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://yeriqqen.github.io";
+  const routes = [
+    "",
+    "/explore",
+    "/about",
+    "/services",
+    "/portfolio",
+    "/contact",
+  ];
 
-  const staticRoutes = ["", "about", "projects", "contact"];
-
-  const staticPages = staticRoutes.map((route) => ({
-    url: `${baseUrl}/${route}`,
-    lastModified: new Date(),
-    changeFrequency: "daily" as const,
-    priority: route === "" ? 1 : 0.8,
-  }));
-
-  return [...staticPages];
+  return routes.map((route) => ({ url: `${baseUrl}${route}` }));
 }
